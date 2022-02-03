@@ -22,15 +22,23 @@ public Nodo insertar (Nodo aux, int valor){
     return aux;
      
 }
-
+//Realiza la busqueda InOrden
 public void inOrden(Nodo aux){
 if(!vacio(aux)){
     inOrden(aux.izq);
-    System.out.println(aux.dato + " ");
+    System.out.print(aux.dato + ", ");
     inOrden(aux.der);
 }
 }
-
+public void buscar(Nodo aux,int valor){
+if(!vacio(aux)){
+    buscar(aux.izq,valor);
+    if(aux.dato == valor){
+        System.out.println("El nodo "+valor+" existe en el arbol");
+    }
+    buscar(aux.der,valor);
+}
+}
 public Boolean vacio (Nodo aux){
     return aux ==  null;
 }
