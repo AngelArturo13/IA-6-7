@@ -10,14 +10,16 @@ public class App {
     int[] columna = { 0, -1, 0, 1 };
 
     static int[][] objetivo = {{0,1,2}, { 3, 4, 5 }, { 6, 7, 8 } };
-    static int[][] estado = {{1,2,3}, { 0, 4, 5 }, { 6, 7, 8 } };
+    static int[][] estado = {{2 ,1, 0}, { 3, 4, 5 }, { 6, 7, 8 } };
 
     public static void main(String[] args) {
         App puzzle = new App();
         int x = puzzle.getX(estado);
         int y = puzzle.getY(estado);
         Nodo raiz = new Nodo(estado,x,y,x,y,0,null);
+        //Nodo raiz2 = new Nodo(estado,x,y,x,y,0,null);
         //System.out.println(puzzle.encontroObj(estado,objetivo));
+        //System.out.println(raiz.compareTo(raiz2));
         puzzle.Buscar(raiz);
         
     }
@@ -49,11 +51,15 @@ public class App {
         inicio.visitado = true;
         r.add(new Rama(inicio));
         cola.add(inicio);
+        //flag para checar si ya existe en la coleccion de rama
+        boolean existeEnR = false;
 
         while (cola.size() > 0) {
             Nodo v = cola.remove();
             if (encontroObj(v.matriz,objetivo)) {
+                System.out.println("Ruta: ");
                 imprimirRuta(v);
+                System.out.println(r.size());
                 return v;
             }
 
@@ -61,18 +67,34 @@ public class App {
             for (int i = 0; i < 4; i++) {
                 if (puedeMover(v.x1 + fila[i], v.y1 + columna[i])) {
                     Nodo n = new Nodo(v.matriz, v.x1, v.y1, v.x1 + fila[i], v.y1 + columna[i],profundidad,v);
-                   
-                    r.add(new Rama(n));
+                    for (int j = 0; j < r.size(); j++) {
+                        if(r.get(j).desc.compareTo(n)==0){
+                            //r.get(j).desc.visitado = true;
+                            existeEnR = true;
+                            break;
+                        }
+                    }
+                    if(!existeEnR){
+                    // System.out.println("hijos de profundida "+profundidad);
+                    // System.out.println(existeEnR);
+                    // imprimirMatriz(n.matriz);
+                    // System.out.println();
+                        r.add(new Rama(n));
                 }
+                }
+                existeEnR = false;
             }
+           existeEnR = false; 
+            
             v.ramas = r;
-
+            //System.out.println(r.size());
+            // ahora tenemos que ver como compararlos con el queu
             for (Nodo w : obtenerSuc(v)) {
                 if (!w.visitado) {
-                    w.visitado = true;                    
+                    // w.visitado = true;                    
                     cola.add(w);
                 }
-            } 
+            }
         }
         return null;
     }

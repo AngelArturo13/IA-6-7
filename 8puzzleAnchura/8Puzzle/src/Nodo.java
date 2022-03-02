@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Nodo {
+public class Nodo implements Comparable <Nodo> {
     // matriz del estado acutal
     int[][] matriz;
     // coordenadas del 0
@@ -38,6 +38,22 @@ public class Nodo {
         ramas = new ArrayList<>();
 
 
+    }
+    public int[][] getMatriz(){
+        return this.matriz;
+    }
+
+    @Override
+    public int compareTo(Nodo n) {
+      for (int i = 0; i < 3; i++){
+         for (int j = 0; j < 3; j++){
+            if (this.matriz[i][j] != n.matriz[i][j]){
+                return 1;
+                
+            }
+        }
+    }
+    return 0;
     }
 }
 
